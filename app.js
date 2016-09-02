@@ -2,7 +2,7 @@
 var express = require('express');
 var app = express();
 var morgan = require('morgan');
-var swig = require('swig');
+var nunjucks = require('nunjucks');
 var makesRouter = require('./routes');
 var fs = require('fs');
 var path = require('path');
@@ -11,10 +11,9 @@ var bodyParser = require('body-parser');
 var socketio = require('socket.io');
 
 // templating boilerplate setup
-app.engine('html', swig.renderFile); // how to render html templates
+app.engine('html', nunjucks.render); // how to render html templates
 app.set('view engine', 'html'); // what file extension do our templates have
-app.set('views', path.join(__dirname, '/views')); // where to find the views
-swig.setDefaults({ cache: false });
+nunjucks.configure('views', { noCache: true }); // where to find the views, caching off
 
 // logging middleware
 app.use(morgan('dev'));
